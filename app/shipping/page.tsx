@@ -1,0 +1,3 @@
+import Prose from "@/components/Prose";
+export const metadata = { title: "Shipping" };
+export default function P() { return <Prose title="Shipping"><p>Every order is printed on demand. Printing takes 3–5 working days, then delivery takes another 3–7 working days across India depending on your pincode.</p><h2>Cost</h2><p>Shipping is included in the price you see. There are no extra charges at checkout.</p><h2>Tracking</h2><p>You'll get tracking details by email and SMS once your order ships.</p><h2>Where</h2><p>We ship within India only for now. Payment is prepaid only; we don't offer cash on delivery.</p></Prose>; }

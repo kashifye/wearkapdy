@@ -1,0 +1,3 @@
+import Prose from "@/components/Prose";
+export const metadata = { title: "Privacy" };
+export default function P() { return <Prose title="Privacy policy"><p>We collect only what we need to deliver your order: name, phone, email, delivery address and pincode.</p><h2>How it's used</h2><p>To process payment, print and ship your order, and to contact you about it. We share your delivery details with our print and courier partners, and payment details are handled by Razorpay. We never see your card or UPI details.</p><h2>What we don't do</h2><p>We don't sell your data. Your bag is stored only in your own browser.</p><h2>Your choices</h2><p>Write to hello@wearkapde.com to see or delete your data.</p></Prose>; }

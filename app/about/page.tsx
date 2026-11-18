@@ -1,0 +1,3 @@
+import Prose from "@/components/Prose";
+export const metadata = { title: "About" };
+export default function P() { return <Prose title="About WearKapde"><p className="t20">कपड़े means clothes. We started at 18, wanting to make futuristic smart clothes. We're not there yet, so for now we make the best plain-spoken streetwear we can.</p><p>Every piece is printed only after you order. That means no unsold stock, no sale racks, and a slightly longer wait. Drop 01 is Sardi: winter in North India, in sixteen designs.</p><p>Everything here is drawn by us. No borrowed logos, characters or faces.</p></Prose>; }
