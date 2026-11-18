@@ -29,3 +29,14 @@ The server recomputes the total from `data/products.ts`; the client price is nev
 - Print PNGs are rasterised with system fonts (Helvetica Neue, Menlo, Kohinoor Devanagari on macOS), so run `export-prints` on a Mac or install equivalents.
 - Site mockups are generated garment silhouettes; replace with real Qikink mockups/photos once samples arrive.
 - Social: see `marketing/captions.md`.
+
+## Automatic Qikink orders (design → hoodie)
+Paid order → Razorpay webhook → `/api/razorpay-webhook` → Qikink order created with the print file.
+
+1. `npm run export-prints` writes print files to `public/print/<design>.png`, served at `https://www.wearkapde.com/print/<design>.png`. Qikink downloads them from there.
+2. Qikink dashboard → API settings: copy Client ID and Secret into Vercel as `QIKINK_CLIENT_ID`, `QIKINK_CLIENT_SECRET`. Keep `QIKINK_BASE_URL=https://sandbox.qikink.com` until a sandbox order works, then switch to the live URL from the same page.
+3. Razorpay → Settings → Webhooks: URL `https://www.wearkapde.com/api/razorpay-webhook`, event `order.paid`, secret = `RAZORPAY_WEBHOOK_SECRET`.
+4. Open `data/qikink.ts` and check the product codes and colour codes against real SKUs in your Qikink catalogue, plus print size and placement.
+5. If the Qikink keys are blank, nothing is sent and you place orders by hand as before.
+
+Garments show the KK monogram until `SHOW_DESIGNS` in `data/products.ts` is set to `true`.
