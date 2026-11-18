@@ -15,7 +15,7 @@ export default function BagClient() {
   const rows = items.map((i, k) => ({ ...i, k, p: getProduct(i.slug)! })).filter((r) => r.p);
   const total = rows.reduce((a, r) => a + priceOf(r.p) * r.qty, 0);
 
-  if (rows.length === 0) return <div style={{ padding: "32px 0 64px" }}><p className="stone t20">Your bag is empty.</p><p style={{ marginTop: 20 }}><Link className="btn" href="/drop">See Drop 01</Link></p></div>;
+  if (rows.length === 0) return <div style={{ padding: "32px 0 64px" }}><p className="stone t20">Your bag is empty.</p><p style={{ marginTop: 20 }}><Link className="btn" href="/drop">View the collection</Link></p></div>;
 
   async function pay(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setErr("");
@@ -27,8 +27,8 @@ export default function BagClient() {
       if (!res.ok) throw new Error(d.error || "Something went wrong.");
       if (!window.Razorpay) throw new Error("Payment window didn't load. Refresh and retry.");
       const rz = new window.Razorpay({
-        key: d.key, amount: d.amount, currency: "INR", order_id: d.orderId, name: "WearKapde", description: "Drop 01 · Sardi",
-        prefill: { name: f.name, email: f.email, contact: f.phone }, theme: { color: "#2B3FD6" },
+        key: d.key, amount: d.amount, currency: "INR", order_id: d.orderId, name: "WearKapde", description: "Collection 01 · Sardi",
+        prefill: { name: f.name, email: f.email, contact: f.phone }, theme: { color: "#0A0A0A" },
         modal: { ondismiss: () => setBusy(false) },
         handler: async (r: any) => {
           const v = await fetch("/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(r) });
@@ -59,7 +59,8 @@ export default function BagClient() {
         <h2 className="t28">Delivery</h2>
         <label>Full name<input name="name" required autoComplete="name" /></label>
         <div className="two"><label>Phone<input name="phone" required inputMode="tel" autoComplete="tel" pattern="[0-9+ ]{10,15}" /></label><label>Email<input name="email" type="email" required autoComplete="email" /></label></div>
-        <label>Address<textarea name="address" required rows={3} autoComplete="street-address" placeholder="House, street, area, city, state" /></label>
+        <label>Address<textarea name="address" required rows={3} autoComplete="street-address" placeholder="House, street, area" /></label>
+        <div className="two"><label>City<input name="city" required autoComplete="address-level2" /></label><label>State<input name="state" required autoComplete="address-level1" /></label></div>
         <label>Pincode<input name="pincode" required inputMode="numeric" pattern="[0-9]{6}" maxLength={6} autoComplete="postal-code" /></label>
         {err && <p className="err" role="alert">{err}</p>}
         <button className="btn" disabled={busy}>{busy ? "Opening payment…" : `Pay ${inr(total)}`}</button>

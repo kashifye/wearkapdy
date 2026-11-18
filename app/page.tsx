@@ -1,51 +1,47 @@
 import Link from "next/link";
-import Hero from "@/components/Hero";
 import Garment from "@/components/Garment";
-import { GARMENTS, getProduct, inr, priceOf, products } from "@/data/products";
-
-const FEATURED = ["chai-over-everything", "smart-cloth-beta", "kohra", "network-nahi-aa-raha"];
-const TONES = ["a", "b", "c", "a"];
+import ProductCard from "@/components/ProductCard";
+import { Monogram } from "@/components/Logo";
+import { products } from "@/data/products";
 
 export default function Home() {
   return (
     <>
-      <Hero />
-      <div className="wrap sec-h"><h2 className="t72">Drop 01 · Sardi</h2><p className="stone t20" style={{ marginTop: 12 }}>Sixteen designs for winter. Fog, chai, razai, and a few jokes.</p></div>
-      {FEATURED.map((slug, i) => {
-        const p = getProduct(slug)!, g = GARMENTS[p.garment];
-        return (
-          <section key={slug} className={`tile ${TONES[i]} ${i % 2 ? "flip" : ""}`}>
-            <div className="tile-copy">
-              <p className="t14 stone">{p.theme}</p>
-              <h3 className="t44">{p.name}</h3>
-              <p className="t20 stone">{p.blurb}</p>
-              <p>{g.label} · {inr(priceOf(p))}</p>
-              <div className="btnrow"><Link className="btn" href={`/p/${p.slug}`}>Buy</Link><Link className="link" href={`/p/${p.slug}`}>Details</Link></div>
-            </div>
-            <div className="tile-art"><Garment type={g.type} colour={p.colours[0]} design={p.design} label={p.name} /></div>
-          </section>
-        );
-      })}
-      <div className="wrap" style={{ textAlign: "center", marginTop: 32 }}><Link href="/drop" className="btn ghost">See all {products.length} designs</Link></div>
-
-      <section className="wrap sec-h">
-        <h2 className="t72">Printed after you order.</h2>
-        <p className="stone t20" style={{ marginTop: 12 }}>Nothing sits in a warehouse. That's why there's no sale rack and no waste.</p>
-        <ol className="steps">
-          <li><span className="n">1</span><h3 className="t28">You order</h3><p className="stone">Pay once, prepaid. No COD.</p></li>
-          <li><span className="n">2</span><h3 className="t28">We print it</h3><p className="stone">Your piece is printed in 3–5 days.</p></li>
-          <li><span className="n">3</span><h3 className="t28">It ships</h3><p className="stone">Tracking lands in your inbox.</p></li>
-        </ol>
+      <section className="hero">
+        <div className="hero-art"><Garment type="hoodie" colour="black" design="" label="KAPDE oversized hoodie in black" /></div>
+        <div className="hero-copy">
+          <p className="over">Collection 01</p>
+          <h1>Sardi</h1>
+          <Link className="under" href="/drop">Discover the collection</Link>
+        </div>
       </section>
 
-      <section className="wrap">
-        <h2 className="t44">On Instagram</h2>
-        <p className="stone">A reel a day, from the lab and the street. <a className="link" href="https://www.instagram.com/wearkapde" rel="noopener">@wearkapde</a></p>
-        <div className="strip">
-          {products.slice(0, 6).map((p) => (
-            <a key={p.slug} href="https://www.instagram.com/wearkapde" rel="noopener" aria-label={`${p.name} on Instagram`}><Garment type={GARMENTS[p.garment].type} colour={p.colours[0]} design={p.design} /></a>
-          ))}
-        </div>
+      <section className="intro">
+        <Monogram size={44} />
+        <p>A house for the cold months. Heavyweight cotton, cut oversized, made one at a time and only once it is ordered.</p>
+      </section>
+
+      <section className="split">
+        <Link href="/drop?type=hoodie" className="panel dark"><Garment type="hoodie" colour="charcoal" design="" /><span>Hoodies</span></Link>
+        <Link href="/drop?type=tee" className="panel"><Garment type="tee" colour="bone" design="" /><span>Tees</span></Link>
+      </section>
+
+      <section className="sec">
+        <div className="sec-head"><h2>The collection</h2><Link className="under" href="/drop">View all</Link></div>
+        <div className="grid">{products.slice(0, 8).map((p) => <ProductCard key={p.slug} p={p} />)}</div>
+      </section>
+
+      <section className="canvas" aria-label="The KK monogram">
+        <div className="canvas-copy"><h2>The KK</h2><p>Two letters, set back to back. Our signature, from the first collection on.</p></div>
+      </section>
+
+      <section className="sec made">
+        <h2>Made to order</h2>
+        <ol>
+          <li><span>I</span><p>You choose your piece.</p></li>
+          <li><span>II</span><p>It is printed for you within 3 to 5 days.</p></li>
+          <li><span>III</span><p>It is shipped to your door, anywhere in India.</p></li>
+        </ol>
       </section>
     </>
   );

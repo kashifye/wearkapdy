@@ -2,6 +2,6 @@ node_modules
 .next
 .env*
 !.env.example
-designs/print
+
 next-env.d.ts
 *.tsbuildinfo

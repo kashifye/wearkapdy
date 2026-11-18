@@ -1,6 +1,5 @@
 import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
-import { GARMENTS, getProduct } from "@/data/products";
 import { priceItems } from "@/lib/order";
 
 export const runtime = "nodejs";
@@ -16,15 +15,14 @@ export async function POST(req: Request) {
   if (!priced) return NextResponse.json({ error: "Your bag has an invalid item." }, { status: 400 });
   const c = body?.customer ?? {};
   const name = clean(c.name, 80), phone = clean(c.phone, 15).replace(/\D/g, ""), email = clean(c.email, 120);
-  const address = clean(c.address, 240), pincode = clean(c.pincode, 6);
-  if (!name || phone.length < 10 || !/^\S+@\S+\.\S+$/.test(email) || !address || !/^\d{6}$/.test(pincode))
+  const address = clean(c.address, 240), pincode = clean(c.pincode, 6), city = clean(c.city, 60), state = clean(c.state, 60);
+  if (!name || phone.length < 10 || !/^\S+@\S+\.\S+$/.test(email) || !address || !city || !state || !/^\d{6}$/.test(pincode))
     return NextResponse.json({ error: "Please check your details." }, { status: 400 });
 
-  // Qikink line per item: "UH32 | Kohra | black | M x1"
-  const lines = priced.items.map((i) => `${GARMENTS[getProduct(i.slug)!.garment].sku} ${i.slug} ${i.colour} ${i.size} x${i.qty}`);
-  const notes: Record<string, string> = { name, phone, email, address, pincode, total: String(priced.total) };
+  // Parseable by lib/fulfil.ts: "slug|colour|size|qty;..."
+  const notes: Record<string, string> = { name, phone, email, address, city, state, pincode, total: String(priced.total) };
   let k = 1, cur = "";
-  for (const l of lines) { if ((cur + l).length > 230) { notes[`items${k++}`] = cur; cur = ""; } cur += (cur ? "; " : "") + l; }
+  for (const i of priced.items) { const l = `${i.slug}|${i.colour}|${i.size}|${i.qty}`; if ((cur + l).length > 240) { notes[`items${k++}`] = cur; cur = ""; } cur += (cur ? ";" : "") + l; }
   if (cur) notes[`items${k}`] = cur;
 
   try {

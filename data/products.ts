@@ -1,4 +1,7 @@
 // Single source of truth. Confirm base prices on the Qikink dashboard and update here.
+// Flip to true once final designs are approved; until then garments show the kapde roundel.
+export const SHOW_DESIGNS = false;
+
 export type GarmentKey = "hoodie-oversized" | "hoodie-classic" | "sweatshirt" | "tee-240" | "tee-180";
 export type ProductType = "hoodie" | "sweatshirt" | "tee";
 
@@ -14,7 +17,8 @@ export const COLOURS = {
   black: { name: "Black", hex: "#15161A", dark: true },
   charcoal: { name: "Charcoal", hex: "#3A3C41", dark: true },
   navy: { name: "Midnight", hex: "#1B2250", dark: true },
-  kora: { name: "Off white", hex: "#F4F5F3", dark: false },
+  white: { name: "White", hex: "#FFFFFF", dark: false },
+  bone: { name: "Bone", hex: "#E9E3D8", dark: false },
   sand: { name: "Sand", hex: "#D9D2C3", dark: false },
   ash: { name: "Ash", hex: "#C9CCCF", dark: false },
 } as const;
@@ -29,7 +33,7 @@ export type Product = {
 };
 
 const D: ColourKey[] = ["black", "charcoal", "navy"];
-const L: ColourKey[] = ["kora", "sand", "ash"];
+const L: ColourKey[] = ["bone", "white", "ash"];
 
 export const products: Product[] = [
   { slug: "wk-01-thermal-unit", name: "WK-01 Thermal Unit", theme: "Kapde Lab", garment: "hoodie-oversized", colours: D, design: "wk-01-thermal-unit", hero: true, blurb: "A spec sheet for the one thing it does: keep you warm at 4°C." },
